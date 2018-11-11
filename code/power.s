@@ -9,7 +9,7 @@
 .globl _start
 
 _start:
-        pushl $3                #push second argument
+        pushl $0                #push second argument
         pushl $2                #push first argument
         call  power             #call the function
         addl  $8, %esp          #move the stack pointer back
@@ -51,12 +51,12 @@ _start:
 power:
         pushl %ebp              #save old base pointer
         movl  %esp, %ebp        #make stack pointer the base pointer
-        subl  $4, %esp          #get room for our local storage
         movl  8(%ebp), %ebx     #put first argument in %eax
         movl  12(%ebp), %ecx    #put second argument in %ecx
-        movl  %ebx, -4(%ebp)    #store current result
+        subl  $4, %esp          #get room for our local storage
+        movl  $1, -4(%ebp)      #start at 1
 power_loop_start:
-        cmpl  $1, %ecx          #if the power is 1, we are done
+        cmpl  $0, %ecx          #if the power is 0, we are done
         je    end_power
         movl  -4(%ebp), %eax    #move the current result into %eax
         imull %ebx, %eax        #multiply the current result by
