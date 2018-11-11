@@ -8,4 +8,4 @@ do
 done
 
 noteshrink -o notes.pdf "$@"
-rm -v *.png
+rm -v ./*.png
