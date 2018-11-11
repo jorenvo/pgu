@@ -14,7 +14,9 @@
 #
 .section .data
 data_items:
-        .long 3,67,34,222,45,75,54,34,44,33,22,11,66,2,0
+        .long 3,67,34,222,45,75,54,34,44,33,22,11,66,2
+data_length:
+        .long 14
 
 .section .text
 .globl _start
@@ -22,12 +24,13 @@ _start:
         movl $0, %edi                   # move 0 into the index register
         movl data_items, %ebx           # initialize %ebx to first element
 
-start_loop:                             # start loop
+start_loop:
+        cmpl data_length, %edi
+        je loop_exit                    # exit if all items are processed
+
         movl data_items(,%edi,4), %eax  # load current value
         incl %edi                       # increment index
 
-        cmpl $0, %eax                   # check to see if we’ve hit the end
-        je loop_exit
         cmpl %ebx, %eax                 # compare values
         jge start_loop                  # jump to loop beginning if the new one isn’t smaller
         movl %eax, %ebx                 # move the value as the largest
