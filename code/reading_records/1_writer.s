@@ -105,13 +105,16 @@ write_one_record:
         pushl   ST_FD(%ebp)                             # push first argument: fd to write to
         call    write_record
 
-        addl    $8, %esp                                # drop FD and %ecb
+        addl    $8, %esp                                # drop fd and %ecb
         popl    %ebx                                    # put records written back in %ebx
                                                         # this also resets esp to before function call
         incl    %ebx                                    # increment records written
         jmp     write_one_record                        # loop
 
 clean_up:
+        movl    $SYS_CLOSE, %eax                        # prepare close
+        movl    ST_FD(%ebp), %ebx                       # set fd
+        int     $LINUX_SYSCALL                          # do close
 
 exit:
         movl    $SYS_EXIT, %eax                         # prepare exit
