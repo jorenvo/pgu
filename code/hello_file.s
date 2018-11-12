@@ -20,7 +20,7 @@
 
 .equ STRING_LENGTH, 13
 string:
-        .byte 'H', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd', '!', '\n'
+        .ascii "Hello world!\n"
 
 .section .text
 .globl _start
