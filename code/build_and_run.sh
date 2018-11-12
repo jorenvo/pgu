@@ -4,7 +4,7 @@
 set -uo pipefail
 
 NAME="${1}"
-as --32 "${NAME}" -o out.o
+as --gstabs --32 "${NAME}" -o out.o
 ld -m elf_i386 out.o
 
 ./a.out
