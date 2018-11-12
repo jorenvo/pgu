@@ -2,6 +2,11 @@ Notes and other stuff taken while reading Programming from the Ground
 Up (http://savannah.nongnu.org/projects/pgubook/).
 
 The book uses GNU Assembler, and the programs are in 32-bit x86 asm in
-the AT&T assembly syntax. Available instructions can be found in the
-Intel dev manual in Chapter 3.2. Available registers can be found in
-Chapter 3.4.
+the AT&T assembly syntax.
+
+The GNU Assembler manual is available at
+https://sourceware.org/binutils/docs/as/index.html#SEC_Contents.
+
+Available instructions can be found in the Intel dev manual in Chapter
+3.2. Available registers can be found in Chapter 3.4.
+
