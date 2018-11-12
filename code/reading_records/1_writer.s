@@ -82,7 +82,7 @@ init:
         movl    $0, %ecx                                # initialize number of records written
 
 write_one_record:
-        cmp     $nr_records, %ecx                       # check if we're done
+        cmp     nr_records, %ecx                        # check if we're done
         je      clean_up                                # clean up if we're done
 
         movl    %ecx, %ebx
@@ -96,6 +96,7 @@ write_one_record:
         popl    %ecx                                    # put records written back in %ebx
                                                         # this also resets esp to before function call
         incl    %ecx                                    # increment records written
+        jmp     write_one_record                        # loop
 
 clean_up:
 
