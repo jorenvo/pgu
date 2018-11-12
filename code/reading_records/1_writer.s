@@ -85,10 +85,23 @@ write_one_record:
         cmp     nr_records, %ecx                        # check if we're done
         je      clean_up                                # clean up if we're done
 
-        movl    %ecx, %ebx
-
         pushl   %ecx                                    # save %ecx
-        pushl   $records                                # push second argument: address to read from
+
+        imul    $RECORD_SIZE, %ecx                      # calculate offset at which current records starts
+        addl    $records, %ecx                          # add this to the start of the records
+
+        ## NOTE:
+        ## Don't try to use a memory reference e.g.:
+        ##
+        ## pushl records(%ecx)
+        ##
+        ## Manually calculate the address like above.
+        ## When using a memory reference the memory
+        ## always gets dereferenced. i.e. the memory
+        ## is calculated and *value at that address*
+        ## is returned. In this case we just want to
+        ## pass the address.
+        pushl   %ecx                                    # push second argument: address to read from
         pushl   ST_FD(%ebp)                             # push first argument: fd to write to
         call    write_record
 
