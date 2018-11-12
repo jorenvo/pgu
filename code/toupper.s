@@ -20,7 +20,7 @@
 .equ SYS_EXIT, 1
 
 ##options for open (look at
-##/usr/include/asm/fcntl.h for
+##/usr/include/asm-generic/fcntl.h for
 ##various values.  You can combine them
 ##by adding them or ORing them)
 ##This is discussed at greater length
