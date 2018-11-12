@@ -1,2 +1,2 @@
-/code/*.o
-/code/a.out
+*.o
+a.out
