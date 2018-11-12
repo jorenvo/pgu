@@ -27,6 +27,7 @@ string:
 _start:
         movl    %esp, %ebp
         addl    $4, %esp                        # reserve space for fd
+
 open:
         movl    $SYS_OPEN, %eax                 # prepare open
         movl    ST_ARGV_1(%ebp), %ebx           # read filename into %ebx
@@ -48,6 +49,6 @@ close:
         int     $LINUX_SYSCALL                  # execute close
 
 exit:
-        movl    $SYS_EXIT, %eax
+        movl    $SYS_EXIT, %eax                 # prepare exit
         movl    $0, %ebx                        # return 0
-        int     $LINUX_SYSCALL
+        int     $LINUX_SYSCALL                  # execute exit
