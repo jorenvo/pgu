@@ -79,21 +79,21 @@ open:
         movl    %eax, ST_FD(%ebp)                       # save fd
 
 init:
-        movl    $0, %ecx                                # initialize number of records written
+        movl    $0, %ebx                                # initialize number of records written
 
 write_one_record:
-        cmp     nr_records, %ecx                        # check if we're done
+        cmp     nr_records, %ebx                        # check if we're done
         je      clean_up                                # clean up if we're done
 
-        pushl   %ecx                                    # save %ecx
+        pushl   %ebx                                    # save %ebx
 
-        imul    $RECORD_SIZE, %ecx                      # calculate offset at which current records starts
-        addl    $records, %ecx                          # add this to the start of the records
+        imul    $RECORD_SIZE, %ebx                      # calculate offset at which current records starts
+        addl    $records, %ebx                          # add this to the start of the records
 
         ## NOTE:
         ## Don't try to use a memory reference e.g.:
         ##
-        ## pushl records(%ecx)
+        ## pushl records(%ebx)
         ##
         ## Manually calculate the address like above.
         ## When using a memory reference the memory
@@ -101,14 +101,14 @@ write_one_record:
         ## is calculated and *value at that address*
         ## is returned. In this case we just want to
         ## pass the address.
-        pushl   %ecx                                    # push second argument: address to read from
+        pushl   %ebx                                    # push second argument: address to read from
         pushl   ST_FD(%ebp)                             # push first argument: fd to write to
         call    write_record
 
         addl    $8, %esp                                # drop FD and %ecb
-        popl    %ecx                                    # put records written back in %ebx
+        popl    %ebx                                    # put records written back in %ebx
                                                         # this also resets esp to before function call
-        incl    %ecx                                    # increment records written
+        incl    %ebx                                    # increment records written
         jmp     write_one_record                        # loop
 
 clean_up:
