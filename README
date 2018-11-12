@@ -5,8 +5,10 @@ The book uses GNU Assembler, and the programs are in 32-bit x86 asm in
 the AT&T assembly syntax.
 
 The GNU Assembler manual is available at
-https://sourceware.org/binutils/docs/as/index.html#SEC_Contents.
+https://sourceware.org/binutils/docs/as/index.html#SEC_Contents. Info
+about register references, memory references and other i386 specific
+things can be found at
+https://sourceware.org/binutils/docs/as/i386_002dDependent.html#i386_002dDependent.
 
 Available instructions can be found in the Intel dev manual in Chapter
 3.2. Available registers can be found in Chapter 3.4.
-
