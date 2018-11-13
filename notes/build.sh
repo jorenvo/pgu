@@ -7,5 +7,5 @@ do
     convert "${PHOTO}" -auto-orient "${PHOTO}"
 done
 
-noteshrink -o notes.pdf "$@"
+noteshrink -wo notes.pdf "$@"
 rm -v ./*.png
