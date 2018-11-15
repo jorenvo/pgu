@@ -116,7 +116,4 @@ clean_up:
         movl    ST_FD(%ebp), %ebx                       # set fd
         int     $LINUX_SYSCALL                          # do close
 
-exit:
-        movl    $SYS_EXIT, %eax                         # prepare exit
-        movl    $0, %ebx                                # return 0
-        int     $0x80                                   # execute syscall
+        call    exit

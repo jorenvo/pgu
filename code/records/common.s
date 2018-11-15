@@ -49,3 +49,10 @@ write_record:
         movl    %ebp, %esp
         popl    %ebp
         ret
+
+.globl exit
+.type exit, @function
+exit:
+        movl    $SYS_EXIT, %eax                         # prepare exit
+        movl    $0, %ebx                                # return 0
+        int     $0x80                                   # execute syscall
