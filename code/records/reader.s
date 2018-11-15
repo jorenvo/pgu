@@ -7,12 +7,15 @@
 
 .section .text
 .equ ST_FD, -4
+.equ ST_READ_BYTES, -8
 .equ O_RDONLY, 00000000
 .equ PERMISSIONS, 0644
+.equ ASCII_SPACE, 32
+.equ ASCII_NEWLINE, 10
 .globl _start
 _start:
         movl    %esp, %ebp
-        subl    $4, %esp                # make room for ST_FD
+        subl    $8, %esp                                # make room for local vars
 
         ## open file specified in first argument
         movl    $SYS_OPEN, %eax
@@ -21,17 +24,18 @@ _start:
         movl    $PERMISSIONS, %edx
 
         int     $LINUX_SYSCALL
-        movl    %eax, ST_FD(%ebp)       # store fd
+        movl    %eax, ST_FD(%ebp)                       # store fd
 
+process_record:
         pushl   $RECORD_DATA
         pushl   ST_FD(%ebp)
-
         call    read_record
+
+        cmp     $0, %eax
+        jle     cleanup
 
         addl    $8, %esp
 
-.equ ASCII_SPACE, 32
-.equ ASCII_NEWLINE, 10
 print:
 print_firstname:
         movl    $SYS_WRITE, %eax
@@ -73,6 +77,8 @@ print_firstname:
         addl    $RECORD_ADDRESS_SIZE, %ecx
         pushl   0(%ecx)
         call    print_int_as_char
+
+        jmp     process_record
 
 cleanup:
         call    exit
