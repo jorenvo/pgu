@@ -12,3 +12,6 @@ https://sourceware.org/binutils/docs/as/i386_002dDependent.html#i386_002dDepende
 
 Available instructions can be found in the Intel dev manual in Chapter
 3.2. Available registers can be found in Chapter 3.4.
+
+oflag values (e.g. O_RDONLY) can be found at
+/usr/include/asm-generic/fcntl.h on my machine.
