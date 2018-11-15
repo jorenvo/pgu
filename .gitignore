@@ -1,2 +1,4 @@
 *.o
 a.out
+/code/records/reader
+/code/records/writer
