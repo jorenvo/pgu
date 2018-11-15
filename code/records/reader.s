@@ -106,22 +106,33 @@ print_char:
         popl    %ebp
         ret
 
+.equ MAX_DIVIDER, 1000000000            # for a 32 bit unsigned int
 .equ ST_NUMBER, 8
+.equ ST_PRINTED, -4
 .type print_int_as_char, @function
 print_int_as_char:
         pushl   %ebp
         movl    %esp, %ebp
+        subl    $4, %esp                # make room for ST_PRINTED
+
+        movl    $0, ST_PRINTED(%ebp)    # initialize printed flag to false
 
         movl    ST_NUMBER(%ebp), %eax   # number to convert
-        movl    $1000000000, %ebx       # current divider, max for a 32 bit number
+        movl    $MAX_DIVIDER, %ebx      # current divider, max for a 32 bit number
         movl    $10, %ecx
 
 process_digit:
         movl    $0, %edx                # keep highest 32 bits of division 0
         divl    %ebx
 
+        cmp     $1, ST_PRINTED(%ebp)
+        je      print_current_char
+
         cmp     $0, %eax
         je      prepare_next_loop
+
+print_current_char:
+        movl    $1, ST_PRINTED(%ebp)    # set printed flag
         addl    $48, %eax               # convert single digit to ascii
         pushl   %edx                    # save register
         pushl   %ecx                    # save register
@@ -144,8 +155,8 @@ prepare_next_loop:
         movl    %eax, %ebx              # move quotient back into ebx
         popl    %eax                    # restore original eax
 
-        cmp     $0, %eax                # check if we still have to process
-        jg      process_digit           # jump if %eax > 0
+        cmp     $0, %ebx                # check if divider is 0 yet
+        jg      process_digit           # jump if divider > 0
 
 print_newline:
         pushl   $ASCII_NEWLINE
