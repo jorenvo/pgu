@@ -8,5 +8,5 @@ compile () {
     ld -m elf_i386 "${NAME}.o" -o "${NAME}"
 }
 
-compile '1_writer.s'
-compile '2_reader.s'
+compile 'writer.s'
+compile 'reader.s'
