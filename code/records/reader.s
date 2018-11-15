@@ -45,9 +45,10 @@ print_firstname:
         int     $LINUX_SYSCALL
 
         pushl   $ASCII_SPACE
-        call    print_char_to_stdout
+        call    print_char
         addl    $4, %esp
 
+print_lastname:
         movl    $SYS_WRITE, %eax
         movl    $STDOUT, %ebx
         movl    $RECORD_DATA, %ecx
@@ -56,9 +57,10 @@ print_firstname:
         int     $LINUX_SYSCALL
 
         pushl   $ASCII_NEWLINE
-        call    print_char_to_stdout
+        call    print_char
         addl    $4, %esp
 
+print_address:
         movl    $SYS_WRITE, %eax
         movl    $STDOUT, %ebx
         movl    $RECORD_DATA, %ecx
@@ -68,9 +70,10 @@ print_firstname:
         int     $LINUX_SYSCALL
 
         pushl   $ASCII_NEWLINE
-        call    print_char_to_stdout
+        call    print_char
         addl    $4, %esp
 
+print_age:
         movl    $RECORD_DATA, %ecx
         addl    $RECORD_FIRSTNAME_SIZE, %ecx
         addl    $RECORD_LASTNAME_SIZE, %ecx
@@ -84,7 +87,8 @@ cleanup:
         call    exit
 
 .equ ST_CHAR, 8
-print_char_to_stdout:   
+.type print_char, @function
+print_char:
         pushl   %ebp
         movl    %esp, %ebp
 
@@ -93,7 +97,7 @@ print_char_to_stdout:
 
         movl    %ebp, %ecx
         addl    $ST_CHAR, %ecx
-        
+
         movl    $1, %edx
 
         int     $LINUX_SYSCALL
@@ -102,16 +106,17 @@ print_char_to_stdout:
         popl    %ebp
         ret
 
-.equ ST_NUMBER, 8        
-print_int_as_char:       
+.equ ST_NUMBER, 8
+.type print_int_as_char, @function
+print_int_as_char:
         pushl   %ebp
         movl    %esp, %ebp
-        
+
         movl    ST_NUMBER(%ebp), %eax   # number to convert
         movl    $1000000000, %ebx       # current divider, max for a 32 bit number
         movl    $10, %ecx
 
-process_digit:  
+process_digit:
         movl    $0, %edx                # keep highest 32 bits of division 0
         divl    %ebx
 
@@ -122,17 +127,17 @@ process_digit:
         pushl   %ecx                    # save register
         pushl   %ebx                    # save register
         pushl   %eax                    # argument for function
-        call    print_char_to_stdout
+        call    print_char
         addl    $4, %esp                # throw away function argument
         popl    %ebx                    # restore register
         popl    %ecx                    # restore register
         popl    %edx                    # restore register
 
-prepare_next_loop:      
+prepare_next_loop:
         movl    %edx, %eax              # move remainder back to be processed again
 
         pushl   %eax                    # remember remainder
-        movl    %ebx, %eax              # prepare dividing the divider 
+        movl    %ebx, %eax              # prepare dividing the divider
         movl    $0, %edx                # make sure highest 32 bits are 0
         divl    %ecx                    # divide the divider by 10
 
@@ -142,9 +147,9 @@ prepare_next_loop:
         cmp     $0, %eax                # check if we still have to process
         jg      process_digit           # jump if %eax > 0
 
-print_newline:  
+print_newline:
         pushl   $ASCII_NEWLINE
-        call    print_char_to_stdout
+        call    print_char
         addl    $4, %esp                # throw away function argument
 
         movl    %ebp, %esp
