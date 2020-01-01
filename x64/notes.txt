@@ -1,0 +1,4 @@
+Darwin syscalls are in syscalls.master.
+
+Syscall number goes in rax.
+Arguments are passed through the rdi, rsi, rdx, r10, r8 and r9 registers, respectively.
